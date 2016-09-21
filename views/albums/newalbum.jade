@@ -1,0 +1,33 @@
+extends ./../layout
+
+block content
+    h4= title
+
+    form(name="new-album" method="POST" action="/albums")
+        p
+            label(for="artist") Artist
+            input(type="text" id="artist" name="artist" required)
+        p
+            label(for="album") Album
+            input(type="text" id="album" name="album" required)
+        p
+            label(for="genre") Genre
+            select(id="genre" name="genre" required)
+                for genre in genres
+                    option #{genre.name}
+        p
+            label(for="star") Stars
+            div
+                label 1
+                input(type="radio" name="star" value='1' id='star1' )
+                input(type="radio" name="star" value='2' id='star2' )
+                input(type="radio" name="star" value='3' id='star3' checked)
+                input(type="radio" name="star" value='4' id='star4' )
+                input(type="radio" name="star" value='5' id='star5' )
+                label 5
+        p
+            input(type="checkbox" checked=true, disabled=false)
+            label(for="lyric") Cotains offensive lyrics
+        p
+            input(type="Submit" value="Create Album" id="submit")
+            a(href="/albums" style="padding-left: 20px;") cancel

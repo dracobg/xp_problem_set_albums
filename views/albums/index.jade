@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    h3= title
+    a(href="#{linkURL}") #{link}
+
+    table
+        thead
+            th Genre
+            th artist
+            th album
+        tbody
+        for album in albums
+            tr
+                td #{album.genre}
+                td #{album.artist}
+                td #{album.album}
