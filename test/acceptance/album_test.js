@@ -115,6 +115,29 @@ describe('Express CRUD', function() {
                 element(by.tagName('h3')).getText().then(function(headertext) {
                     expect(headertext).to.equal('Albums');
                 });
+                element(by.cssContainingText('td', "Calvin Horris")).getText().then(function(headertext) {
+                    expect(headertext).to.equal('Calvin Horris');
+                });
+            })
+
+        })
+
+        it('clicking the cancel button on /albums/new should NOT add new album while routing the browser to /albums', function() {
+            browser.get('/albums/new')
+            element(by.id('artist')).sendKeys("should not be in list");
+            element(by.id('album')).sendKeys("blank");
+            element(by.cssContainingText('option', 'Rock')).click();
+            element(by.id('star1')).click();
+            element(by.id('offensive')).click();
+
+            element(by.id('cancelbutton')).click().then(function() {
+                element(by.tagName('h3')).getText().then(function(headertext) {
+                    expect(headertext).to.equal('Albums');
+                });
+                element(by.cssContainingText('td', "should not be in list")).isPresent().then(function(headertext) {
+                    console.log(headertext);
+                    expect(headertext).to.equal(false);
+                });
             })
 
         })
