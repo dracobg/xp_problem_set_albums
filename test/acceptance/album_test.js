@@ -86,10 +86,44 @@ describe('Express CRUD', function() {
             });
         });
 
+        it('clicking the New Albums link on /albums should route the browser to /newalbum', function() {
+            browser.get('/albums')
+            element(by.css('a[href*="/albums/new"]')).click().then(function() {
+                element(by.tagName('h4')).getText().then(function(headertext) {
+                    expect(headertext).to.equal('Create Albums');
+                });
+            })
+
+        })
+
+
         after(function() {
             db.remove({});
         });
     });
+
+    describe('Behaviour for /albums/new', function() {
+        it('clicking the Create Album button on /albums/new should add new album and route the browser to /albums', function() {
+            browser.get('/albums/new')
+            element(by.id('artist')).sendKeys("Calvin Horris");
+            element(by.id('album')).sendKeys("Never Heard of It");
+            //element(by.id('genre'))[1].click();
+
+
+
+
+
+
+            element(by.id('submit')).click().then(function() {
+                element(by.tagName('h3')).getText().then(function(headertext) {
+                    expect(headertext).to.equal('Albums');
+                });
+            })
+
+        })
+
+    })
+
 
     describe('Behavior for /albums/:id/edit', function() {
         it('should allow user input via a form to modify existing albums within the database', function() {
