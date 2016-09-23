@@ -139,9 +139,41 @@ describe('Express CRUD', function() {
                     expect(headertext).to.equal(false);
                 });
             })
+        })
+    })
+
+    describe('Behavior for /albums/new', function() {
+        var db = require('../../config/database').get('albums');
+        var album = {
+            genre: 'Pop',
+            artist: 'Pittsburgh Pirates',
+            album: 'American Tobacco Company',
+            stars: 5,
+            lyrics: true
+        };
+
+        before(function(done) {
+            db.insert(album, done);
+        });
+
+        it('should prepopulate the fields with the value for the record currently being inspected', function(done) {
+            db.find({
+                album: "American Tobacco Company"
+            }, function(err, returnedValue) {
+                console.log('err ', err, 'returnedValue', returnedValue)
+
+                browser.get('/' + returnedValue[0]._id + '/edit')
+                console.log('---------------', element(by.id("artist")).getCssValue().toString());
+                element(by.id("artist")).getAttribute().then(function(albumText) {
+                    expect(albumText).to.equal("Pittsburgh Pirates")
+                });
+            })
 
         })
 
+        after(function() {
+            db.remove({});
+        });
     })
 
 
