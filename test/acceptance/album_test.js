@@ -32,9 +32,15 @@ describe('Express CRUD', function() {
             });
         })
 
+        it('clicking the link on / should route the browser to /album', function() {
+            browser.get('/')
 
-
-
+            element(by.css('a[href*="/albums"]')).click().then(function() {
+                element(by.tagName('h3')).getText().then(function(headertext) {
+                    expect(headertext).to.equal('Albums');
+                });
+            })
+        })
     });
 
     describe('When i visit /albums', function() {
