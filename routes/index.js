@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-var albumsCollection = require('../config/database').get('albums');
+const db = require('../config/database');
+var albumsCollection = db.get('albums')
+    /* GET home page. */
 
-/* GET home page. */
+
 router.get('/', function(req, res, next) {
     res.render('index', {
         title: 'OMG Albums',
@@ -12,18 +14,68 @@ router.get('/', function(req, res, next) {
     });
 });
 
+
+
+/* GET home page. */
+
+
 router.get('/albums', function(req, res, next) {
 
-    albumsCollection.find({}, function(err, result) {
-        if (err) throw err;
-        res.render('albums/index', {
-            title: 'Albums',
-            link: 'New Album',
-            linkURL: '/albums/new',
-            albums: result
-        });
+    var albums = albumsCollection.find({}, (err, data) => {
+        res.render(
+            'albums/index', {
+                albums: data,
+
+                title: 'Albums',
+                link: 'New Album',
+                linkURL: '/albums/new'
+            }
+        )
+
+    });
+});
+
+router.get('/:id', function(req, res, next) {
+    albumsCollection.findOne({
+        _id: req.params.id
+    }, function(err, foundAlbum) {
+        if (err) throw err
+        res.render('albums/show', {
+            album: foundAlbum
+        })
     })
 });
+
+
+
+
+router.delete('/:id', function(req, res) {
+    albumsCollection.remove({
+        _id: req.params.id
+    }, function(err, foundAlbum) {
+        if (err) throw err
+        res.redirect('/albums')
+    })
+});
+
+router.get('/:id/edit', function(req, res, next) {
+    albumsCollection.findOne({
+        _id: req.params.id
+    }, function(err, foundAlbum) {
+        if (err) throw err
+        res.render('albums/edit', {
+            album: foundAlbum,
+            genres: [{
+                name: 'Ska'
+            }, {
+                name: 'Rock'
+            }, {
+                name: 'Pop'
+            }]
+        })
+    })
+});
+
 
 router.post('/albums', function(req, res, next) {
     console.log('body=', req.body)
@@ -38,12 +90,15 @@ router.get('/albums/new', function(req, res, next) {
     res.render('albums/newalbum', {
         title: 'Create Albums',
         genres: [{
-                name: 'Ska'
-            }, {
-                name: 'rock'
-            }]
-            //link: 'let me see the RIGHT NOW!',
-            //linkURL: '/albums
+            name: 'Ska'
+        }, {
+            name: 'Rock'
+        }, {
+            name: 'Pop'
+        }],
+
+        //link: 'let me see the RIGHT NOW!',
+        //linkURL: '/albums
     });
 });
 

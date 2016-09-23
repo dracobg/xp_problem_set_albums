@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+    h1 Showing Album: #{album.album}
+    p Genre: #{album.genre}
+    p Artist: #{album.artist}
+    p
+    a(href="#{album._id}/edit") Edit
+    p
+    form(name="new-album" method="POST" action="#{album._id}?_method=delete")
+        p
+            input(type="Submit" value="Delete" id="delete")

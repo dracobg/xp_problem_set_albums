@@ -10,19 +10,6 @@ before(function() {
 });
 
 describe('Express CRUD', function() {
-    describe('Given I visit /users', function() {
-        it('Then I see the express default', function() {
-            browser.get('/users');
-            element(by.tagName('body')).getText().then(function(text) {
-                expect(text).to.equal('respond with a resource');
-            });
-        });
-
-    });
-});
-
-
-describe('Express CRUD', function() {
     describe('When i visit /', function() {
         it('Then I see the OMG header', function() {
             browser.get('/');
@@ -37,6 +24,17 @@ describe('Express CRUD', function() {
                 expect(text).to.equal('let me see the RIGHT NOW!');
             });
         });
+
+        it('Destination of link routes to /albums', function() {
+            browser.get('/')
+            element(by.css('a[href*="/albums"]')).getText().then(function(text) {
+                expect(text).to.equal('let me see the RIGHT NOW!');
+            });
+        })
+
+
+
+
     });
 
     describe('When i visit /albums', function() {
@@ -53,9 +51,22 @@ describe('Express CRUD', function() {
             db.insert(album, done);
         });
 
-
-
         it('Then I see the albums header', function() {
+            var album = {
+                genre: 'Honus Wagner',
+                artist: 'Pittsburgh Pirates',
+                album: 'American Tobacco Company',
+                stars: 5,
+                lyrics: true
+            };
+
+            var db = require('../../config/database').get('albums');
+            db.insert(album, function(err, albumStuff) {
+                if (err) throw err;
+                console.log("Album", album);
+                console.log("=================================");
+            })
+
             browser.get('/albums');
             element(by.tagName('h3')).getText().then(function(headertext) {
                 expect(headertext).to.equal('Albums');
@@ -69,43 +80,30 @@ describe('Express CRUD', function() {
             });
         });
 
-        it('Then I see the albums table', function() {
-            browser.get('/albums');
-
-            browser.wait(function() {
-                return ptor.isElementPresent(availableElement);
-            }, 30000);
-
-            element(by.tagName('td')).getText().then(function(text) {
-                console.log(text);
-                expect(text).to.equal('Honus Wagner');
-            });
-        });
-
         after(function() {
             db.remove({});
         });
     });
 
-
-    describe('Express CRUD', function() {
-        describe('Given I visit /albums/new', function() {
-            it('Then I see the new albums url page', function() {
-                browser.get('/albums/new');
-
-                element(by.id('artist')).sendKeys("Calvin Harris");
-                element(by.id('album')).sendKeys("Greatest hits");
-                element(by.id('submit')).click().then(function() {
-                    //console.log(element(by.tagName('tr')));
-                    element.all(by.tagName('td')).getText().then(function(text) {
-                        console.log(text)
-                        expect(text[1]).to.equal('Calvin Harris');
-                    });
-                });
-
-            });
-
-        });
+    describe('Behavior for /albums/:id/edit', function() {
+        it('should allow user input via a form to modify existing albums within the database', function() {
+            //     browser.get("/albums")
+            //
+            //     browser.wait(function() {
+            //         var elementToFind = by.tagName('td');
+            //         return browser.isElementPresent(elementToFind);
+            //     }, 2000);
+            //     console.log(3);
+            //     element(by.name('link')).click().then(function() {
+            //         browser.wait(function() {
+            //             var elementToFind = by.id('artist')
+            //             return browser.isElementPresent(elementToFind)
+            //             console.log(2)
+            //         }, 2000)
+            //
+            //         console.log(1)
+            //     })
+            // })
+        })
     });
-
-});
+})

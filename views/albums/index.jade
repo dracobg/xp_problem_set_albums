@@ -4,14 +4,15 @@ block content
     h3= title
     a(href="#{linkURL}") #{link}
 
-    table
+    table(class="table table-striped table-bordered ")
         thead
             th Genre
-            th artist
-            th album
+            th Artist
+            th Album
         tbody
-        for album in albums
+        for onealbum in albums
             tr
-                td #{album.genre}
-                td #{album.artist}
-                td #{album.album}
+                td #{onealbum.genre}
+                td(id="artist") #{onealbum.artist}
+                td 
+                    a(href="#{onealbum._id}") #{onealbum.album}
