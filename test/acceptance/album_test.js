@@ -107,12 +107,9 @@ describe('Express CRUD', function() {
             browser.get('/albums/new')
             element(by.id('artist')).sendKeys("Calvin Horris");
             element(by.id('album')).sendKeys("Never Heard of It");
-            //element(by.id('genre'))[1].click();
-
-
-
-
-
+            element(by.cssContainingText('option', 'Rock')).click();
+            element(by.id('star1')).click();
+            element(by.id('offensive')).click();
 
             element(by.id('submit')).click().then(function() {
                 element(by.tagName('h3')).getText().then(function(headertext) {
