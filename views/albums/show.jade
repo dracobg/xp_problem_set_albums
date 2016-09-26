@@ -5,7 +5,7 @@ block content
     p Genre: #{album.genre}
     p Artist: #{album.artist}
     p
-    a(href="#{album._id}/edit") Edit
+    a(href="edit/#{album._id}") Edit
     p
     form(name="new-album" method="POST" action="#{album._id}?_method=delete")
         p

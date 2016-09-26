@@ -8,8 +8,8 @@ var albumsCollection = db.get('albums')
 
 router.get('/', function(req, res, next) {
     res.render('index', {
-        title: 'OMG Albums',
-        link: 'let me see the RIGHT NOW!',
+        title: 'OMG Albums!',
+        link: 'let me see them RIGHT NOW!',
         linkURL: '/albums'
     });
 });
@@ -58,7 +58,7 @@ router.delete('/:id', function(req, res) {
     })
 });
 
-router.get('/:id/edit', function(req, res, next) {
+router.get('/edit/:id', function(req, res, next) {
     albumsCollection.findOne({
         _id: req.params.id
     }, function(err, foundAlbum) {
